@@ -1,0 +1,29 @@
+{
+  "name": "thirteen",
+  "version": "1.0.0",
+  "description": "- Goal of this application is to learn MERN Stack",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --legacy-watch backend/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Peter-Phi-Tran/Thirteen.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Peter-Phi-Tran/Thirteen/issues"
+  },
+  "homepage": "https://github.com/Peter-Phi-Tran/Thirteen#readme",
+  "dependencies": {
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "mongoose": "^8.16.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

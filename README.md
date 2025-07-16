@@ -1,6 +1,3 @@
-# mern-stack
+# Thirteen
 
-Resume Builder Platform
-Custom templates, PDF export, live preview.
-Users can save multiple resumes and share via link.
-Integrate AI summaries (optional).
+- Goal of this application is to learn MERN Stack
