@@ -1,18 +1,15 @@
 import express from 'express';
-import dotenv from 'dotenv';
-import connectDB from './config/db.js';
-import { connect } from 'mongoose';
+import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 
-dotenv.config();
+import authRoutes from './routes/authRoutes.js';
+import instrumentRoutes from './routes/instrumentRoutes.js';
+import transactionRoutes from './routes/transactionRoutes.js';
+import portfolioRoutes from './routes/portfolioRoutes.js';
+import marketDataRoutes from './routes/marketDataRoutes.js';
+
+import { errorHandler } from './middleware/errorHandler.js';
+import { config } from './config/environment.js';
 
 const app = express();
-
-app.get("/products", (req, res) => {});
-
-console.log(process.env.MONGO_URI)
-
-app.listen(5000, () => {
-    connectDB();
-    console.log("Server started at http://localhost:5000");
-});
-
