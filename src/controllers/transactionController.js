@@ -11,12 +11,12 @@ export const createTransaction = async (req, res, next) => {
         const { portfolioId, type, symbol, quantity, price } = req.body;
 
         const portfolio = await Portfolio.findOne({
-            _id: portfolio, 
+            _id: portfolioId, 
             userId: req.user._id
         }).session(session);
 
         if (!portfolio) {
-            await session.abourtTransaction();
+            await session.abortTransaction();
             return res.status(404).json({ 
                 success: false,
                 error: 'Portfolio not found'
@@ -37,7 +37,7 @@ export const createTransaction = async (req, res, next) => {
 
             const existingHolding = portfolio.holdings.find(h => h.symbol === symbol);
             if( existingHolding ) {
-                const totalShares = existingHolding.quantity + quantity;
+                const totalShares = parseFloat(existingHolding.quantity) + quantity;
                 const totalCost = (existingHolding.quantity * existingHolding.avgPrice) + totalAmount;
                 existingHolding.avgPrice = totalCost / totalShares;
                 existingHolding.quantity = totalShares

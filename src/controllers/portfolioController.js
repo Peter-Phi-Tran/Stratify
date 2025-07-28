@@ -3,7 +3,7 @@ import MarketData from '../models/marketData.js';
 
 export const createPortfolio = async (req, res, next) => {
     try {
-        const { name, initalCash } = req.body;
+        const { name, initialCash } = req.body;
 
         const portfolio = new Portfolio({
             userId: req.user._id,
@@ -36,7 +36,7 @@ export const getPortfolios = async (req, res, next) => {
     }
 };
 
-export const getOnePortfolio = async (req, res, next) => {
+export const getPortfolio = async (req, res, next) => {
     try { 
         const portfolio = await Portfolio.findOne({
             _id: req.params.id,
@@ -81,7 +81,7 @@ export const updatePortfolio = async (req, res, next) => {
             if(lastPrice){
                 holding.currentPrice = lastPrice.close;
                 holding.marketValue = holding.quantity * lastPrice.close;
-                holidng.unrealizedPnL = holding.marketValue - (holding.quantity * holding.avgPrice);
+                holding.unrealizedPnL = holding.marketValue - (holding.quantity * holding.avgPrice);
                 holding.unrealizedPnLPercent = (holding.unrealizedPnL / (holding.quantity * holding.avgPrice)) * 100;
             }
         }
@@ -93,7 +93,7 @@ export const updatePortfolio = async (req, res, next) => {
         portfolio.totalValue = parseFloat(portfolio.cash) + totalHoldingsValue;
 
         await portfolio.save();
-        
+
         res.json({
             success: true,
             data: { portfolio }

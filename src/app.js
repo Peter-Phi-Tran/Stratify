@@ -12,17 +12,21 @@ import marketDataRoutes from './routes/marketDataRoutes.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { config } from './config/environment.js';
 
+import cookieParser from 'cookie-parser';
+
+
 const app = express();
 
 app.use(helmet()); // Security middleware to set various HTTP headers
 app.use(cors()); // Enable CORS for all routes
+app.use(cookieParser()); // Parse cookies from request headers
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100, // Limit each IP to 100 requests per windowMs
     message: 'Too many requests, please try again later.'
 });
-app.use('/api/', limiter);
+app.use('/api', limiter);
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
@@ -41,7 +45,7 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-app.use('*', (req, res) => {
+app.use('/*splat', (req, res) => {
     res.status(404).json({
         success: false,
         error: 'Route Not Found'

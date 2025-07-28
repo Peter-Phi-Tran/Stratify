@@ -1,4 +1,4 @@
-import { body, validationResult } from 'express-validatior';
+import { body, validationResult } from 'express-validator';
 
 // Validation for user registration and login
 export const validateUser = [ 
@@ -20,7 +20,7 @@ export const validateUser = [
 ];
 
 // Validation for market data transactions
-export const validateMarketData = [
+export const validateTransaction = [
     body('type')
         .isIn(['buy', 'sell'])
         .withMessage('Transaction type must be either buy or sell'),

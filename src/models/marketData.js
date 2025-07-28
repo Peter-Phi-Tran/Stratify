@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const marketDataschema = new mongoose.Schema({
+const marketDataSchema = new mongoose.Schema({
     symbol: {
         type: String, 
         required: true,
@@ -30,10 +30,13 @@ const marketDataschema = new mongoose.Schema({
         type: Number, 
         required: true 
     }
+},
+{
+    timestamps: true
 });
 
-marketDataSchema.index({ symbol: 1, timestamp: -1});
+marketDataSchema.index({ symbol: 1, timestamp: -1 });
 
-const MarketData = mongoose.model('MarketData', marketDataschema);
+const MarketData = mongoose.model('MarketData', marketDataSchema);
 
 export default MarketData;

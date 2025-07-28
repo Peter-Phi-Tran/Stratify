@@ -27,15 +27,11 @@ const instrumentSchema = new mongoose.Schema({
     isActive: {
         type: Boolean, 
         default: true
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
     }
 },
 {
-    timestamps: true // Automatically add createdAt and updatedAt fields
-})
+    timestamps: true
+});
 
 const Instrument = mongoose.model('Instrument', instrumentSchema);
 

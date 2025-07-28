@@ -1,27 +1,51 @@
-import jwt from 'jsonwebtoken'; // Importing the jsonwebtoken library for token handling
+// src/middleware/auth.js
+import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
 import { config } from '../config/environment.js';
 
-export const authenticate = async (req, res, next) => { // Middleware to authenticate user based on JWT
-    try {
-        const token = req.header('Authorization')?.replace('Bearer ', '');
-        if (!token) {
-            return res.status(401).json({ error: 'Access denied. No token provided.' });
-        }
+/**
+ * Issue a signed access token for a given userId.
+ */
+export const generateAccessToken = (userId) =>
+  jwt.sign({ userId }, config.jwt.accessSecret, {
+    expiresIn: config.jwt.accessExpire
+  });
 
-        const decoded = jwt.verify(token, config.jwtSecret);
-        const user = await User.findById(decoded.userId);
+/**
+ * Issue a signed refresh token (stored client-side, ideally in an Http-Only cookie).
+ */
+export const generateRefreshToken = (userId) =>
+  jwt.sign({ userId }, config.jwt.refreshSecret, {
+    expiresIn: config.jwt.refreshExpire
+  });
 
-        if (!user) { return res.status(401).json({ error: 'User not found.' }); } // If user is not found, return 401 Unauthorized
-        req.user = user;
-        next();
-    } catch (error) {
-        res.status(401).json({error: 'Invalid token.'});
+/**
+ * Middleware to authenticate incoming requests via the Authorization header.
+ * Expects:  Authorization: Bearer <token>
+ */
+export const authenticate = async (req, res, next) => {
+  try {
+    const authHeader = req.header('Authorization') || '';
+    const token      = authHeader.startsWith('Bearer ')
+      ? authHeader.substring(7)
+      : null;
+
+    if (!token) {
+      return res.status(401).json({ success: false, error: 'No token provided' });
     }
-};
 
-export const generateToken = (userId) => { // Function to generate a JWT token for a user
-    return jwt.sign({ userId }, config.jwtSecret, {
-        expiresIn: config.jwtExpire
-    });
+    // Verify signature & expiry
+    const decoded = jwt.verify(token, config.jwt.accessSecret);
+    const user    = await User.findById(decoded.userId).select('-passwordHash');
+
+    if (!user) {
+      return res.status(401).json({ success: false, error: 'User not found' });
+    }
+
+    req.user = user;          // attach to downstream handlers
+    next();
+  } catch (err) {
+    // Token expired or invalid
+    return res.status(401).json({ success: false, error: 'Invalid or expired token' });
+  }
 };

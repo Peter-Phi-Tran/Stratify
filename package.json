@@ -1,25 +1,28 @@
 {
-  "name": "thirteen",
+  "name": "stratify",
   "version": "1.0.0",
   "description": "- Goal of this application is to learn MERN Stack",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --legacy-watch backend/app.js"
+    "start": "node src/server.js",
+    "dev": "nodemon --legacy-watch src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Peter-Phi-Tran/Thirteen.git"
+    "url": "git+https://github.com/Peter-Phi-Tran/Stratify.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "bugs": {
-    "url": "https://github.com/Peter-Phi-Tran/Thirteen/issues"
+    "url": "https://github.com/Peter-Phi-Tran/Stratify/issues"
   },
-  "homepage": "https://github.com/Peter-Phi-Tran/Thirteen#readme",
+  "homepage": "https://github.com/Peter-Phi-Tran/Stratify#readme",
   "dependencies": {
     "bcryptjs": "^3.0.2",
+    "config": "^4.1.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
@@ -28,7 +31,8 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.4",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "cookie-parser": "^1.4.6"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

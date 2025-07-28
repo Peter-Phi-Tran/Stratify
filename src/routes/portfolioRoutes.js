@@ -1,14 +1,19 @@
 import express from 'express';
-import { getPortfolio, createPortfolio, getPortfolios, updatePortfolioValue } from '../controllers/portfolioController.js';
+import { 
+  createPortfolio, 
+  getPortfolios, 
+  getPortfolio, 
+  updatePortfolio
+} from '../controllers/portfolioController.js';
 import { authenticate } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.use(authenticate); // Apply authentication middleware to all routes
+router.use(authenticate); // All portfolio routes require authentication
 
 router.post('/', createPortfolio);
 router.get('/', getPortfolios);
 router.get('/:id', getPortfolio);
-router.put('/:id/update-value', updatePortfolioValue);
+router.put('/:id/update-value', updatePortfolio);
 
-export default router; // Export the router to be used in the main app;
+export default router;

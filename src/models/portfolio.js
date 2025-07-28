@@ -13,10 +13,10 @@ const holdingSchema = new mongoose.Schema({
     avgPrice: { 
         type: mongoose.Schema.Types.Decimal128,
         required: true,
-    },
+    }
 },
 {
-    _id: false, // Disable automatic _id field
+    _id: false
 });
 
 const portfolioSchema = new mongoose.Schema({
@@ -34,15 +34,11 @@ const portfolioSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.Decimal128,
         default: 0.0
     },
-    holdings: [holdingSchema], // Array of holdings
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
+    holdings: [holdingSchema]
 },
 {
-    timestamps: true // Automatically add createdAt and updatedAt fields
-})
+    timestamps: true
+});
 
 const Portfolio = mongoose.model('Portfolio', portfolioSchema);
 

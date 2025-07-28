@@ -31,13 +31,13 @@ export const getLatestPrice = async (req, res, next) =>{
     try{
         const { symbol } = req.params;
 
-        const latestPrice = await marketData.findOne({
+        const latestPrice = await MarketData.findOne({
             symbol: symbol.toUpperCase()
         })
         .sort({ timestamp: -1 })
         .limit(1);
 
-        if( !latestprice ){
+        if( !latestPrice ){
             return res.status(404).json({
                 success: false,
                 message: 'Latest price not found for the given symbol.'

@@ -1,14 +1,22 @@
+// src/routes/authRoutes.js
 import express from 'express';
-import { register, login, getProfile } from '../controllers/authController.js';
 import { authenticate } from '../middleware/auth.js';
-import { validateUser, checkValidationErrors } from '../middleware/validation.js';
+import {
+  registerUser,
+  loginUser,
+  getProfile,
+  refreshAccessToken
+} from '../controllers/authController.js';
+import {
+  validateUser,
+  checkValidationErrors
+} from '../middleware/validation.js';
 
-const router = express.Router(); // Create a new router instance
+const router = express.Router();
 
-router.post('/register', validateUser, checkValidationErrors, register);
-router.post('/login', login);
-router.get('/profile', authenticate, getProfile);
+router.post('/register', validateUser, checkValidationErrors, registerUser);
+router.post('/login',    loginUser);
+router.get('/refresh',   refreshAccessToken);          // new route
+router.get('/profile',   authenticate, getProfile);
 
-export default router; // Export the router to be used in the main app
-
-
+export default router;
