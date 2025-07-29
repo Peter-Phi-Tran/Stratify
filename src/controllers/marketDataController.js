@@ -1,5 +1,6 @@
 import MarketData from '../models/marketData.js';
 import Instrument from '../models/instrument.js';
+import socketService from '../services/socketService.js'; 
 
 export const getMarketData = async (req, res, next) => {
     try{
@@ -69,6 +70,12 @@ export const addMarketData = async (req, res, next) => {
         });
 
         await marketData.save();
+
+        socketService.emitMarketData({
+            symbol: marketData.symbol,
+            close: marketData.close,
+            timestamp: marketData.timestamp
+        });
 
         res.status(201).json({
             success: true,

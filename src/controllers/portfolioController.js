@@ -1,5 +1,6 @@
 import Portfolio from '../models/portfolio.js';
 import MarketData from '../models/marketData.js';
+import socketService from '../services/socketService.js';
 
 export const createPortfolio = async (req, res, next) => {
     try {
@@ -93,6 +94,20 @@ export const updatePortfolio = async (req, res, next) => {
         portfolio.totalValue = parseFloat(portfolio.cash) + totalHoldingsValue;
 
         await portfolio.save();
+
+        socketService.emitToPortfolio(portfolio._id, 'portfolio_updated', {
+            portfolioId: portfolio._id,
+            totalValue: parseFloat(portfolio.totalValue),
+            holdings: portfolio.holdings.map(h => ({
+                symbol: h.symbol,
+                quantity: parseFloat(h.quantity),
+                currentPrice: parseFloat(h.currentPrice || 0),
+                marketValue: parseFloat(h.marketValue || 0),
+                unrealizedPnL: parseFloat(h.unrealizedPnL || 0),
+                unrealizedPnLPercent: parseFloat(h.unrealizedPnLPercent || 0)
+            })),
+            timestamp: new Date()
+        });
 
         res.json({
             success: true,

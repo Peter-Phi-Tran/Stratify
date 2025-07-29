@@ -1,4 +1,4 @@
-# Thirteen
+# Stratify
 
 ## Goal of this application is to learn MERN Stack (MongoDB, Express.js, React.js, Node.js)
 

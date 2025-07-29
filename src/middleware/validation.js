@@ -6,7 +6,7 @@ export const validateUser = [
         .isLength({ min: 3, max: 20 })
         .withMessage('Username must be between 3 and 20 characters')
         .matches(/^[a-zA-Z0-9_]+$/) // Only alphanumeric characters and underscores
-        .withMessage('Username can only contian letters, numbers, and underscores'),
+        .withMessage('Username can only contain letters, numbers, and underscores'),
 
     body('email')
         .isEmail()
@@ -16,7 +16,7 @@ export const validateUser = [
         .isLength({ min: 8 })
         .withMessage('Password must be at least 8 characters long')
         .matches(/[!@#$%^&*(),.?":{}|<>]/)
-        .withMessage('Password must contain at least one special charaacter')
+        .withMessage('Password must contain at least one special character')
 ];
 
 // Validation for market data transactions

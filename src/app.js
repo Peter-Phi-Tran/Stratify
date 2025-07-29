@@ -13,6 +13,7 @@ import { errorHandler } from './middleware/errorHandler.js';
 import { config } from './config/environment.js';
 
 import cookieParser from 'cookie-parser';
+import socketRoutes from './routes/socketRoutes.js';
 
 
 const app = express();
@@ -20,6 +21,7 @@ const app = express();
 app.use(helmet()); // Security middleware to set various HTTP headers
 app.use(cors()); // Enable CORS for all routes
 app.use(cookieParser()); // Parse cookies from request headers
+app.use('/api/socket', socketRoutes); // Socket routes
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
@@ -40,7 +42,7 @@ app.use('/api/market-data', marketDataRoutes);
 app.get('/api/health', (req, res) => {
     res.json({
         success: true,
-        message: 'Thirteen API is running',
+        message: 'Stratify API is running',
         timestamp: new Date().toISOString()
     });
 });

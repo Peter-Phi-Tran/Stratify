@@ -1,6 +1,7 @@
 import Transaction from '../models/transaction.js';
 import Portfolio from '../models/portfolio.js';
 import MarketData from '../models/marketData.js';
+import socketService from '../services/socketService.js';
 import mongoose from 'mongoose';
 
 export const createTransaction = async (req, res, next) => {
@@ -77,8 +78,34 @@ export const createTransaction = async (req, res, next) => {
 
         await transaction.save({ session });
         await portfolio.save({ session });
-
         await session.commitTransaction();
+
+        socketService.emitToUser(req.user._id, 'transaction_completed', {
+            transaction: {
+                id: transaction._id, 
+                type: transaction.type,
+                symbol: transaction.symbol,
+                quantity: parseFloat(transaction.quantity),
+                price: parseFloat(transaction.price),
+                executedAt: transaction.executedAt,
+            },
+            portfolio: {
+                id: portfolio._id,
+                cash: parseFloat(portfolio.cash),
+                totalValue: parseFloat(portfolio.cash) + portfolio.holdings.reduce((sum, h) => 
+                    sum + parseFloat(h.quantity) * h.avgPrice, 0
+                )
+            }
+        });
+
+        socketService.emitToPortfolio(portfolio._id, 'new_transaction', {
+            transaction: {
+                type: transaction.type, 
+                symbol: transaction.symbol,
+                quantity: parseFloat(transaction.quantity),
+                price: parseFloat(transaction.price)
+            }
+        });
 
         res.status(201).json({
             success: true,

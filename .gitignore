@@ -1,2 +1,42 @@
-.env
+# Node.js
 node_modules/
+.env
+.env.local
+.env.*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+dist/
+build/
+coverage/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Editor/IDE
+.vscode/
+.idea/
+*.swp
+
+# Frontend (React/Vite/Next.js)
+client/node_modules/
+client/dist/
+client/build/
+client/.env
+client/.env.local
+client/.next/
+client/.cache/
+client/.DS_Store
+
+# Backend
+backend/node_modules/
+backend/dist/
+backend/build/
+backend/.env
+backend/.env.local
+backend/.DS_Store

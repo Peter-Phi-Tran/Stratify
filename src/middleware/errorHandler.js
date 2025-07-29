@@ -31,12 +31,12 @@ export const errorHandler = (err, req, res, next) => {
     }
 
     // Default error handler
-    // Set status code to 500 if not specificed & spread into response object adding stack propety
+    // Set status code to 500 if not specified & spread into response object adding stack property
     res.status(err.statusCode || 500).json({
         success: false,
         error: config.nodeEnv === 'development' ? err.message : 'Server Error', 
         ...(config.nodeEnv === 'development' && { stack: err.stack })
-    })
-}
+    });
+};
 
 

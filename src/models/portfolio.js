@@ -14,10 +14,7 @@ const holdingSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.Decimal128,
         required: true,
     }
-},
-{
-    _id: false
-});
+}, { _id: false });
 
 const portfolioSchema = new mongoose.Schema({
     userId: {
