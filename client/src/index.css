@@ -1,3 +1,25 @@
+/* Noto Sans, Adlam */
+@import url('https://fonts.googleapis.com/css2?family=ADLaM+Display&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* <weight>: Use a value from 200 to 1000
+ <uniquifier>: Use a unique and descriptive class name
+*/
+
+.noto-sans-regular {
+  font-family: "Noto Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+.adlam-display-regular {
+  font-family: "ADLaM Display", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
