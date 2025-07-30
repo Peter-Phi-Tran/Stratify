@@ -2,7 +2,13 @@
 
 import React, { useState } from "react";
 
-// Example asset options—for now, hard-coded
+// Mock portfolios (replace with API data/context)
+const portfolios = [
+  { id: "portfolio1", name: "Main Portfolio" },
+  { id: "portfolio2", name: "Growth Test" },
+];
+
+// Example asset options
 const assets = [
   { symbol: "AAPL", name: "Apple Inc.", price: 197.23 },
   { symbol: "TSLA", name: "Tesla Inc.", price: 276.11 },
@@ -10,13 +16,16 @@ const assets = [
 ];
 
 export default function Trade() {
+  // Use the first portfolio as default
   const [form, setForm] = useState({
+    portfolioId: portfolios[0]?.id || "",
     action: "buy",
     asset: assets[0].symbol,
     quantity: "",
   });
   const [confirm, setConfirm] = useState("");
   const asset = assets.find(a => a.symbol === form.asset);
+  const portfolioName = portfolios.find(p => p.id === form.portfolioId)?.name;
 
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -25,9 +34,20 @@ export default function Trade() {
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (!form.quantity || isNaN(form.quantity) || form.quantity <= 0) return;
-    // Place trade here (API/Socket)
-    setConfirm(`${form.action === "buy" ? "Bought" : "Sold"} ${form.quantity} ${asset.symbol} @ $${asset.price}`);
+    if (
+      !form.portfolioId ||
+      !form.quantity ||
+      isNaN(form.quantity) ||
+      form.quantity <= 0
+    ) {
+      setConfirm(""); // No confirmation if invalid
+      return;
+    }
+    setConfirm(
+      `${form.action === "buy" ? "Bought" : "Sold"} ${form.quantity} ${
+        asset.symbol
+      } @ $${asset.price} (${portfolioName})`
+    );
     setForm({ ...form, quantity: "" });
   };
 
@@ -37,6 +57,23 @@ export default function Trade() {
         <h1 className="text-3xl font-bold mb-6 text-navyblue">Place a Trade</h1>
 
         <form className="space-y-5" onSubmit={handleSubmit}>
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">
+              Portfolio
+            </label>
+            <select
+              name="portfolioId"
+              value={form.portfolioId}
+              onChange={handleChange}
+              className="w-full rounded border px-4 py-2 bg-white"
+            >
+              {portfolios.map(p => (
+                <option key={p.id} value={p.id}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
+          </div>
           <div>
             <label className="block text-gray-700 font-medium mb-1">Action</label>
             <select
@@ -65,7 +102,9 @@ export default function Trade() {
             </select>
           </div>
           <div>
-            <label className="block text-gray-700 font-medium mb-1">Quantity</label>
+            <label className="block text-gray-700 font-medium mb-1">
+              Quantity
+            </label>
             <input
               type="number"
               name="quantity"
@@ -78,17 +117,31 @@ export default function Trade() {
             />
           </div>
           <div className="flex items-center justify-between">
-            <div className="text-gray-600">Est. Price: <span className="font-bold text-navyblue">${asset.price}</span></div>
             <div className="text-gray-600">
-              Total: <span className="font-bold text-calmblue">
-                ${form.quantity ? (form.quantity * asset.price).toLocaleString(undefined, { maximumFractionDigits: 2 }) : "0.00"}
+              Est. Price:{" "}
+              <span className="font-bold text-navyblue">${asset.price}</span>
+            </div>
+            <div className="text-gray-600">
+              Total:{" "}
+              <span className="font-bold text-calmblue">
+                $
+                {form.quantity
+                  ? (form.quantity * asset.price).toLocaleString(undefined, {
+                      maximumFractionDigits: 2,
+                    })
+                  : "0.00"}
               </span>
             </div>
           </div>
           <button
             type="submit"
             className="w-full bg-calmblue hover:bg-navyblue text-lg font-bold text-white py-3 rounded-xl transition"
-            disabled={!form.quantity || isNaN(form.quantity) || form.quantity <= 0}
+            disabled={
+              !form.portfolioId ||
+              !form.quantity ||
+              isNaN(form.quantity) ||
+              form.quantity <= 0
+            }
           >
             {form.action === "buy" ? "Buy" : "Sell"} {asset.symbol}
           </button>

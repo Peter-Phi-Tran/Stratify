@@ -4,7 +4,7 @@ import React from "react";
 
 export default function Landing() {
   return (
-    <main className="bg-white min-h-screen flex flex-col justify-center py-20">
+    <main className="min-h-screen flex flex-col justify-center py-20">
       <section className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16 px-6">
         {/* Left Intro Column */}
         <div className="flex-1">
